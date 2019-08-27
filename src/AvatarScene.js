@@ -7,7 +7,8 @@ import {
   HemisphericLight,
   Mesh,
   SceneLoader,
-  ArcRotateCamera
+  ArcRotateCamera,
+  Quarternion
 } from "babylonjs";
 
 import avatar from "./assets/Dude.json";
@@ -93,3 +94,4 @@ const AvatarScene = ({ boneNum }) => {
 };
 
 export default AvatarScene;
+// bone.rotationQuaternion=new Quarternion(x,y,z,w);
