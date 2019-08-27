@@ -12,6 +12,7 @@ import {
 } from "babylonjs";
 
 import avatar from "./assets/Dude.json";
+// import avatar from "./assets/AvatarMVI_Female_Rig.json";
 // import avatar from "./assets/AvatarMVI_Rig.json";
 
 const AvatarScene = ({ boneNum }) => {
@@ -20,16 +21,22 @@ const AvatarScene = ({ boneNum }) => {
   const [skeleton, setSkeleton] = useState(null);
   const [previousBone, setPreviousBone] = useState(null);
   const canvasRef = useRef(null);
-
+  console.log('avatar scene')
 
   useEffect(() => {
+    console.log('A')
     if (skeleton) {
       if (previousBone) {
+        console.log('setting previous back')
         previousBone.setScale(new Vector3(1, 1, 1));
       }
 
       let bone = skeleton.bones[boneNum];
-      if (!bone) return;
+      if (!bone) {
+        console.log('no bone');
+        return;
+      }
+      console.log('scaling bone', boneNum);
       bone.setScale(new Vector3(2, 2, 2));
       setPreviousBone(bone);
     }
@@ -37,6 +44,7 @@ const AvatarScene = ({ boneNum }) => {
 
   useEffect(() => {
     if (engine) return; // only do once
+    console.log('B')
     const canvas = canvasRef.current;
     const e = new Engine(canvas, true);
     setEngine(e);
@@ -91,7 +99,7 @@ const AvatarScene = ({ boneNum }) => {
     width: 1000,
     height: 800
   };
-
+  console.log("render canvas");
   return <canvas {...opts} ref={canvasRef} />;
 };
 
