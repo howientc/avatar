@@ -12,6 +12,7 @@ import {
 } from "babylonjs";
 
 import avatar from "./assets/Dude.json";
+// import avatar from "./assets/AvatarMVI_Rig.json";
 
 const AvatarScene = ({ boneNum }) => {
   // const [scene, setScene] = useState(null);
@@ -65,6 +66,7 @@ const AvatarScene = ({ boneNum }) => {
       function(newMeshes, particleSystems, skeletons) {
         // mesh = newMeshes[0];
         setSkeleton(skeletons[0]);
+        console.log("skel", skeletons[0]);
       }
     );
     e.runRenderLoop(() => {
