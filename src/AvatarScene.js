@@ -15,29 +15,38 @@ import {
 // import avatar from "./assets/AvatarMVI_Female_Rig.json";
 // import avatar from "./assets/AvatarMVI_Rig.json";
 import avatar from './assets/AvatarMVI_Female_Rig_TestAnim';
-const AvatarScene = ({ boneNum }) => {
+const AvatarScene = ({ boneInfo, boneNum }) => {
   // const [scene, setScene] = useState(null);
   const [engine, setEngine] = useState(null);
   const [skeleton, setSkeleton] = useState(null);
   const [previousBone, setPreviousBone] = useState(null);
   const canvasRef = useRef(null);
-  console.log('avatar scene')
 
+  // useEffect(() => {
+  //   if (skeleton) {
+  //     if (previousBone) {
+  //       console.log('setting previous back')
+  //       previousBone.setScale(new Vector3(1, 1, 1));
+  //     }
+
+  //     let bone = skeleton.bones[boneNum];
+  //     if (!bone) {
+  //       return;
+  //     }
+  //     bone.setScale(new Vector3(2, 2, 2));
+  //     setPreviousBone(bone);
+  //   }
+  // }, [skeleton, boneNum, previousBone]);
   useEffect(() => {
-    if (skeleton) {
-      if (previousBone) {
-        console.log('setting previous back')
-        previousBone.setScale(new Vector3(1, 1, 1));
-      }
-
-      let bone = skeleton.bones[boneNum];
-      if (!bone) {
-        return;
-      }
-      bone.setScale(new Vector3(2, 2, 2));
-      setPreviousBone(bone);
+    if (skeleton && boneInfo) {
+      // console.log(boneInfo)
+      boneInfo.forEach( ({boneId, p, q } )=> {
+        let bone = skeleton.bones[boneId];
+        bone.rotationQuaternion = q;
+        // bone.position = p; 
+      })
     }
-  }, [skeleton, boneNum, previousBone]);
+  }, [skeleton, boneInfo]);
 
   useEffect(() => {
     if (engine) return; // only do once
@@ -70,7 +79,6 @@ const AvatarScene = ({ boneNum }) => {
       function(newMeshes, particleSystems, skeletons) {
         // mesh = newMeshes[0];
         setSkeleton(skeletons[0]);
-        console.log("skel", skeletons[0]);
       }
     );
     e.runRenderLoop(() => {
@@ -95,7 +103,6 @@ const AvatarScene = ({ boneNum }) => {
     width: 1000,
     height: 800
   };
-  console.log("render canvas");
   return <canvas {...opts} ref={canvasRef} />;
 };
 
