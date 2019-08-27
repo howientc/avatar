@@ -11,10 +11,10 @@ import {
   Quarternion
 } from "babylonjs";
 
-import avatar from "./assets/Dude.json";
+// import avatar from "./assets/Dude.json";
 // import avatar from "./assets/AvatarMVI_Female_Rig.json";
 // import avatar from "./assets/AvatarMVI_Rig.json";
-
+import avatar from './assets/AvatarMVI_Female_Rig_TestAnim';
 const AvatarScene = ({ boneNum }) => {
   // const [scene, setScene] = useState(null);
   const [engine, setEngine] = useState(null);
@@ -24,7 +24,6 @@ const AvatarScene = ({ boneNum }) => {
   console.log('avatar scene')
 
   useEffect(() => {
-    console.log('A')
     if (skeleton) {
       if (previousBone) {
         console.log('setting previous back')
@@ -33,10 +32,8 @@ const AvatarScene = ({ boneNum }) => {
 
       let bone = skeleton.bones[boneNum];
       if (!bone) {
-        console.log('no bone');
         return;
       }
-      console.log('scaling bone', boneNum);
       bone.setScale(new Vector3(2, 2, 2));
       setPreviousBone(bone);
     }
@@ -44,7 +41,6 @@ const AvatarScene = ({ boneNum }) => {
 
   useEffect(() => {
     if (engine) return; // only do once
-    console.log('B')
     const canvas = canvasRef.current;
     const e = new Engine(canvas, true);
     setEngine(e);
