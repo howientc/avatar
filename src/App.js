@@ -1,11 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import _ from 'lodash';
-import {
-  Quaternion,
-  Vector3,
-
-} from "babylonjs";
-
+import { Vector3, Quaternion } from "@babylonjs/core/Maths/math";
 
 import mockSensors from './mock/mockSensors';
 
@@ -41,14 +36,20 @@ const boneType = {
 const boneName = _.invert(boneType);
 
 const BONE_MAP = {
+  // [boneName['Spine']] : 2,
   [boneName['Hand_L']] : 10,
   [boneName['Elbow_L']] : 9,
-  [boneName['Arm_L']] : 8,
-  [boneName['Shoulder_L']] : 6,
-  [boneName['Shoulder_R']] : 28,
-  [boneName['Arm_R']] : 30,
-  [boneName['Elbow_R']] : 31,
   [boneName['Hand_R']] : 32,
+  [boneName['Elbow_R']] : 31,
+//hips?
+//head?
+  // [boneName['Spine2']] : 4,
+  // [boneName['Spine1']] : 3,
+// neck?  
+  [boneName['Shoulder_L']] : 6,
+  [boneName['Shoulder_R']] : 29,
+  [boneName['Arm_L']] : 8,
+  [boneName['Arm_R']] : 30,
 };
 
 function App() {
@@ -64,8 +65,9 @@ function App() {
         const {QX, QY, QZ, QW, PX, PY, PZ, ID } = bone;
         const boneId = BONE_MAP[ID];
         if (boneId) {
-          const q = new Quaternion(QX / 1000 , QY / 1000, QZ / 1000, QW / 1000);
+          let q = new Quaternion(QX / 1000 , QY / 1000, QZ / 1000, QW / 1000);
           const p  = new Vector3(PX / 1000, PY/1000, PZ/1000);
+          // q = Quaternion.Inverse(q);
           b.push( { boneId, p, q });
         }
       });

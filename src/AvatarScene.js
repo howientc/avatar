@@ -1,15 +1,11 @@
 import React, { useRef, useState, useEffect } from "react";
-import {
-  Engine,
-  Scene,
-  FreeCamera,
-  Vector3,
-  HemisphericLight,
-  Mesh,
-  SceneLoader,
-  ArcRotateCamera,
-  Quarternion
-} from "babylonjs";
+import { Engine } from "@babylonjs/core/Engines/engine";
+import { Scene } from "@babylonjs/core/scene";
+import { SceneLoader } from "@babylonjs/core";
+import { Vector3 } from "@babylonjs/core/Maths/math";
+import { ArcRotateCamera } from "@babylonjs/core/Cameras/arcRotateCamera";
+import { HemisphericLight } from "@babylonjs/core/Lights/hemisphericLight";
+// import { Mesh } from "@babylonjs/core/Meshes/mesh";
 
 // import avatar from "./assets/Dude.json";
 // import avatar from "./assets/AvatarMVI_Female_Rig.json";
@@ -37,8 +33,9 @@ const AvatarScene = ({ boneInfo, boneNum }) => {
   //     setPreviousBone(bone);
   //   }
   // }, [skeleton, boneNum, previousBone]);
+
   useEffect(() => {
-    if (skeleton && boneInfo) {
+      if (skeleton && boneInfo) {
       // console.log(boneInfo)
       boneInfo.forEach( ({boneId, p, q } )=> {
         let bone = skeleton.bones[boneId];
