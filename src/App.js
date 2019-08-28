@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import _ from 'lodash';
+import { invert } from 'lodash';
 import { Vector3, Quaternion } from "@babylonjs/core/Maths/math";
 
 import mockSensors from './mock/mockSensors';
@@ -10,7 +10,7 @@ import AvatarScene from './AvatarScene';
 
 
 // These come from Unreal and correspond to boneType in database
-const boneType = {
+export const boneType = {
   0: 'Spine',
   1: 'Hand_L',
   2: 'Elbow_L',
@@ -33,23 +33,24 @@ const boneType = {
   19: 'Ankle_R',
 };
 
-const boneName = _.invert(boneType);
+const boneName = invert(boneType);
 
 const BONE_MAP = {
-  // [boneName['Spine']] : 2,
-  [boneName['Hand_L']] : 10,
-  [boneName['Elbow_L']] : 9,
-  [boneName['Hand_R']] : 32,
-  [boneName['Elbow_R']] : 31,
+  [boneName['Shoulder_L']] : 6,
+  [boneName['Arm_L']] : 7,
+  [boneName['Elbow_L']] : 10,
+  [boneName['Hand_L']] : 12 ,
+
 //hips?
 //head?
+  // [boneName['Spine']] : 2,
   // [boneName['Spine2']] : 4,
   // [boneName['Spine1']] : 3,
 // neck?  
-  [boneName['Shoulder_L']] : 6,
   [boneName['Shoulder_R']] : 29,
-  [boneName['Arm_L']] : 8,
   [boneName['Arm_R']] : 30,
+  [boneName['Elbow_R']] : 33,
+  [boneName['Hand_R']] : 35,
 };
 
 function App() {
@@ -57,26 +58,24 @@ function App() {
   const incrementBone = useCallback(() => setBoneNum(boneNum => boneNum + 1), []);
   const decrementBone = useCallback(() => setBoneNum(boneNum => boneNum - 1), []);
   const [boneInfo, setBoneInfo] = useState(null);
+  const [paused, setPaused] = useState(true);
   if (!boneInfo) {
     mockSensors(({ Skeletal }) => {
       const b = [];
-      console.log('sssss')
       Skeletal.forEach(bone => {
         const {QX, QY, QZ, QW, PX, PY, PZ, ID } = bone;
-        const boneId = BONE_MAP[ID];
-        if (boneId) {
+        // const boneId = BONE_MAP[ID];
           let q = new Quaternion(QX / 1000 , QY / 1000, QZ / 1000, QW / 1000);
           const p  = new Vector3(PX / 1000, PY/1000, PZ/1000);
-          // q = Quaternion.Inverse(q);
-          b.push( { boneId, p, q });
-        }
+          b.push( { ID, p, q });
       });
       setBoneInfo(b);
     });
   }
   return (
       <div>
-      <AvatarScene boneInfo={boneInfo} boneNum={boneNum}/>
+      <AvatarScene boneInfo={boneInfo} boneNum={boneNum} paused={paused}/>
+      <button type="button" onClick={()=>setPaused(!paused)}>{paused ? "resume" : "pause"}</button>
       <button type="button" onClick={decrementBone}>Less</button>
       <span>{boneNum}</span>
       <button type="button" onClick={incrementBone}>More</button>
